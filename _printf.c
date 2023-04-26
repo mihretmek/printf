@@ -12,7 +12,7 @@ int _printf(const char *format, ...)
 	int (*function)(va_list, flag_t *);
 	const char *p;
 	va_list arg;
-	flag_t fl = {0, 0, 0};
+	flag_t flags = {0, 0, 0};
 
 	register int count = 0;
 
@@ -36,7 +36,7 @@ int _printf(const char *format, ...)
 				p++;
 			function = print(*p);
 			count += (function)
-					? function(arg, &fl)
+					? function(arg, &flags)
 					: _printf('%%%c', *p);
 		}
 		else

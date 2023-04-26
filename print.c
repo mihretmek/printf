@@ -21,11 +21,11 @@ int (*print(char s))(va_list, flag_t *);
 		{'b', print_bin}
 		/* end */
 	};
-	int fl 9;
+	int flags = 9;
 
 	register int i;
 
-	for (i = 0; i < fl; i++)
+	for (i = 0; i < flags; i++)
 	{
 		if (arr[i].c == s)
 			return (arr[i].f);
