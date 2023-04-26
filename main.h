@@ -25,7 +25,7 @@ typedef struct print_F
  * @hashtag: flag for '#'
  */
 
-typedef struct flag
+typedef struct flags
 {
 	int plus;
 	int space;
