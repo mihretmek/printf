@@ -33,7 +33,7 @@ int _printf(const char *format, ...)
 				count += _putchar('%');
 				continue;
 			}
-			while (flag(*p, &fl))
+			while (flag(*p, &flags))
 				p++;
 			function = print(*p);
 			count += (function)
