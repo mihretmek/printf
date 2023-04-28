@@ -1,60 +1,71 @@
 #ifndef MAIN_H
 #define MAIN_H
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
-#include <limits.h>
+#define UNUSED(x) (void)(x)
+#define buff_size 1024
+#define F_MINUS 1
 
 /**
- * struct print_F - struct for chosing right function
- * @c: format
- * @f: pointer to right function
+ * struct FORMAT - operations
+ * @FORMAT: format
+ * @fxn: function
  */
 
-typedef struct print_F
+struct FORMAT
 {
-	char c;
-	int (*f)(va_list lists, flag_t *f);
-} print_f;
+	char FORMAT;
+	int (*fxn)(va_list, char[], int, int, int, int);
+};
 
-/**
- * struct flag - struct for turning flag on
- * @plus: flag for '+'
- * @space: flag for ' '
- * @hashtag: flag for '#'
- */
+typedef struct FORMAT f;
 
-typedef struct flags
-{
-	int plus;
-	int space;
-	int hashtag;
-} flag_t;
-
-int _putchar(char c);
-int _putstr(char *str);
 int _printf(const char *format, ...);
-char *convert(unsigned long int num, int base, int lowercase);
-int (*print(char s))(va_list, flag_t *);
-int flag(char s, flag_t *f);
 
+int prints(const char *FORMAT, int *i, va_list list, char buffer[],
+	int flags, int width, int precision, int size);
 
-/* numbers*/
-int print_int(va_list list, flag_t *f);
-int print_num(int n);
-int print_unsigned_int(va_list list, flag_t *f);
-int count_dig(int i);
+int flag(const char *format, int *i);
 
-/* bases*/
-int print_hex(va_list list, flag_t *f);
-int print_HEX(va_list list, flag_t *f);
-int print_bin(va_list list, flag_t *f);
+int width(const char *format, int *i, va_list list);
 
-/* alphabets*/
-int print_char(va_list list, flag_t *f);
-int print_str(va_list list, flag_t *f);
+int precision(const char *format, int *i, va_list list);
 
-int print_perc(va_list list, flag_t *f);
+int size(const char *format, int *i);
 
+int print_c(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_str(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_perc(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_i(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_bin(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_unsigned_i(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_hex(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_HEX(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int print_oct(va_list types, char buffer[], int flags,
+	int width, int precision, int size);
+
+int handle_write_c(char c, char buffer[], int flags,
+	int width, int precision, int size);
+
+long int convert_size_num(long int num, int size);
+
+int write_number(int pos, int ind, char buffer[], int flags,
+	int width, int precision, int size);
 #endif

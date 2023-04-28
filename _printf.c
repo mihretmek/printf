@@ -1,49 +1,63 @@
 #include "main.h"
-#include <stdarg.h>
-#include <limits.h>
+
+void print_buffer(char buffer[], int *buffer_i);
 
 /**
- * _printf - a function to get output depending on format
- * Return: length of formatted output
- * @format: format string
+ * _printf - a function that produces output according
+ * to format
+ * Return: number of char printed
+ * @format: character string
  */
 
-int _printf(const char *format, ...)
+int _printf(const char *format)
 {
-	int (*function)(va_list, flag_t *);
-	const char *p;
-	va_list arg;
-	flag_t flags = {0, 0, 0};
+	int i, print, print_char = 0;
+	int flags, w, p, s, buffer_i = 0;
+	va_list list;
+	char buffer[buff_size];
 
-	register int count = 0;
-
-	va_start(arg, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
+	if (format == NULL)
 		return (-1);
 
-	for (p = format; *p; p++)
+	va_start(list, format);
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (*p == '%')
+		if (format[i] != '%')
 		{
-			p++;
-			if (*p == '%')
-			{
-				count += _putchar('%');
-				continue;
-			}
-			while (flag(*p, &flags))
-				p++;
-			function = print(*p);
-			count += (function)
-					? function(arg, &flags)
-					: _printf('%%%c', *p);
+			buffer[buffer_i++] = format[i];
+			if (buffer_i == buff_size)
+				print_buffer(buffer, &buffer_i);
+			print_char++;
 		}
 		else
-			count += _putchar(*p);
+		{
+			print_buffer(buffer, &buffer_i);
+			flags = flag(format, &i);
+			w = width(format, &i, list);
+			p = precision(format, &i, list);
+			s = size(format, &i);
+			++i;
+			print = prints(format, &i, list, buffer, flags,
+				w, p, s);
+			if (print == -1)
+				return (-1);
+			print_char += print;
+		}
 	}
-	_putchar(-1);
-	va_end(arg);
-	return (count);
+	print_buffer(buffer, &buffer_i);
+	va_end(list);
+	return (print_char);
+}
+
+/**
+ * print_buffer - prints contents of buffer
+ * @buffer: array of char
+ * @buffer_i: next char index
+ */
+
+void print_buffer(char buffer[], int *buffer_i)
+{
+	if (*buffer_i > 0)
+		write(1, &buffer[0], buffer_i);
+	*buffer_i = 0;
 }
