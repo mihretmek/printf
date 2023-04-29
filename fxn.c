@@ -109,7 +109,7 @@ int print_perc(va_list types, char buffer[], int flags,
 int print_i(va_list types, char buffer[], int flags,
 	int width, int precision, int size)
 {
-	int i = buff_size - 2;
+	int i = BUFF_SIZE - 2;
 	int neg = 0;
 	long int n = va_arg(types, long int);
 	unsigned long int num;
@@ -118,7 +118,7 @@ int print_i(va_list types, char buffer[], int flags,
 
 	if (n == 0)
 		buffer[i--] = '0';
-	buffer[buff_size - 1] = '\0';
+	buffer[BUFF_SIZE - 1] = '\0';
 	num = (unsigned long int)n;
 	if (n < 0)
 	{

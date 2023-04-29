@@ -11,10 +11,10 @@ void print_buffer(char buffer[], int *buffer_i);
 
 int _printf(const char *format)
 {
-	int i, print, print_char = 0;
-	int flags, w, p, s, buffer_i = 0;
+	int i, printed, printed_char = 0;
+	int flags, width, precision, size, buffer_i = 0;
 	va_list list;
-	char buffer[buff_size];
+	char buffer[BUFF_SIZE];
 
 	if (format == NULL)
 		return (-1);
@@ -25,28 +25,28 @@ int _printf(const char *format)
 		if (format[i] != '%')
 		{
 			buffer[buffer_i++] = format[i];
-			if (buffer_i == buff_size)
+			if (buffer_i == BUFF_SIZE)
 				print_buffer(buffer, &buffer_i);
-			print_char++;
+			printed_char++;
 		}
 		else
 		{
 			print_buffer(buffer, &buffer_i);
-			flags = flag(format, &i);
-			w = width(format, &i, list);
-			p = precision(format, &i, list);
-			s = size(format, &i);
+			flags = FLAG(format, &i);
+			width = WIDTH(format, &i, list);
+			precision = PRECISION(format, &i, list);
+			size = SIZE(format, &i);
 			++i;
-			print = prints(format, &i, list, buffer, flags,
-				w, p, s);
-			if (print == -1)
+			printed = prints(format, &i, list, buffer, flags,
+				width, precision, size);
+			if (printed == -1)
 				return (-1);
-			print_char += print;
+			printed_char += printed;
 		}
 	}
 	print_buffer(buffer, &buffer_i);
 	va_end(list);
-	return (print_char);
+	return (printed_char);
 }
 
 /**
